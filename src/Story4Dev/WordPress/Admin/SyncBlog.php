@@ -148,19 +148,44 @@ class SyncBlog extends WelcomePage{
     
     public function getDescription($report) {
         $description = $report->description;
-        $description .= '<ul class="report-file">';
-        if(isset($report->reportFiles) && is_array($report->reportFiles)){
-            foreach($report->reportFiles as $reportFile){
-                $file = $reportFile->file;
-                if($file){
-                    $description .= '<li>';
-                        //$description .= '<a href="'.WEB_URL.'/download/'.$file->id.'" target="_blank"></a>';
-                        $description .= '<a href="'.self::WEB_URL.'/uploads/file/'.$file->name.'" target="_blank">'.$file->name.'</a>';
-                    $description .= '</li>';
+        
+        $description .= '<div class="results">';
+            $description .= '<h3>Résultats</h3>';
+            $description .= '<ul class="report-results">';
+            if(isset($report->results) && is_array($report->results)){
+                foreach($report->results as $result){
+                    $indicator = $result->indicator;
+                    if($indicator){
+                        $description .= '<li>';
+                            $description .= $indicator->title;
+                        
+                            $unit = $indicator->unit;
+                            if($unit){
+                                $description .= '( ' . $result->value . ' ' . $unit->title . ' )';
+                            }
+                        $description .= '</li>';
+                    }
                 }
             }
-        }
-        $description .= '</ul>';
+            $description .= '</ul>';
+        $description .= '<div>';
+        
+        $description .= '<div class="files">';
+            $description .= '<h3>Documents</h3>';
+            $description .= '<ul class="report-files">';
+            if(isset($report->reportFiles) && is_array($report->reportFiles)){
+                foreach($report->reportFiles as $reportFile){
+                    $file = $reportFile->file;
+                    if($file){
+                        $description .= '<li>';
+                            //$description .= '<a href="'.WEB_URL.'/download/'.$file->id.'" target="_blank"></a>';
+                            $description .= '<a href="'.self::WEB_URL.'/uploads/file/'.$file->name.'" target="_blank">'.$file->name.'</a>';
+                        $description .= '</li>';
+                    }
+                }
+            }
+            $description .= '</ul>';
+        $description .= '<div>';
 
         return $description;
     }
