@@ -38,6 +38,7 @@ class Welcome{
             $welcomes = array();
             
             $welcomes[] = new Dashboard();
+            $welcomes[] = new SyncBlog();
 
             self::$welcomes = apply_filters( 'story4dev_get_welcomes_pages', $welcomes );
         }

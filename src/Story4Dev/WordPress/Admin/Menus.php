@@ -18,6 +18,7 @@ class Menus implements HooksInterface{
     public function hooks(){
         add_action( "admin_menu", array($this, 'admin_menu') );
         add_action( "admin_menu", array($this, 'dashboard_menu') );
+        add_action( "admin_menu", array($this, 'sync_menu') );
     }
     
     public function admin_menu(){
@@ -26,6 +27,11 @@ class Menus implements HooksInterface{
     
     public function dashboard_menu(){
         $welcome_page = add_submenu_page('story4dev', __( 'Welcome to Story4Dev', 'story4dev' ) , __( 'Story4Dev', 'story4dev' ), 'manage_options', 'story4dev', array($this, "welcome_page"), null, 0);
+        add_action( 'load-' . $welcome_page, array( $this, 'welcome_page_init' ) );
+    }
+    
+    public function sync_menu(){
+        $welcome_page = add_submenu_page('story4dev', __( 'Sync from Story4Dev', 'story4dev' ) , __( 'Sync', 'story4dev' ), 'manage_options', 'story4dev-sync-blog', array($this, "welcome_page"), null, 0);
         add_action( 'load-' . $welcome_page, array( $this, 'welcome_page_init' ) );
     }
     

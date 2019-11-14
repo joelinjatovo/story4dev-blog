@@ -53,9 +53,8 @@ class SyncBlog extends WelcomePage{
 					'title'           => __( 'Project Slug', 'story4dev' ),
 					'desc'            => __( 'Lien url du projet sur Story4Dev', 'story4dev' ),
 					'id'              => 'story4dev_project_slug',
-					'default'         => 'no',
-					'type'            => 'checkbox',
-					'show_if_checked' => 'option',
+					'default'         => '',
+					'type'            => 'text',
 				),
 
 				array(
