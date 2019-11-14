@@ -14,8 +14,8 @@ class Dashboard extends WelcomePage {
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->id    = 'wppd';
-		$this->label = __( 'Welcome', 'wppd' );
+		$this->id    = 'story4dev';
+		$this->label = __( 'Welcome', 'story4dev' );
 		parent::__construct();
 	}
 
@@ -27,32 +27,32 @@ class Dashboard extends WelcomePage {
 	public function get_welcomes() {
 
 		$welcomes = apply_filters(
-			'wppd_dashboard_welcomes',
+			'story4dev_dashboard_welcomes',
 			array(
 
 				array(
 					'type'  => 'title',
-					'title' => __( 'Dashboard', 'wppd' ),
-					'desc'  => __( 'Description', 'wppd' ),
-					'id'    => 'wppd_dashboard',
+					'title' => __( 'Dashboard', 'story4dev' ),
+					'desc'  => __( 'Description', 'story4dev' ),
+					'id'    => 'story4dev_dashboard',
 				),
 
 				array(
 					'type'  => 'notice',
-					'class' => 'wppd-notice wppd-notice-important',
+					'class' => 'story4dev-notice story4dev-notice-important',
 					//'title' => __( 'Important', 'WpPerDim' ),
-					'desc'  => __( 'Notice', 'wppd' ),
+					'desc'  => __( 'Notice', 'story4dev' ),
 					'id'    => 'dashboard-notice',
 				),
 
 				array(
 					'type' => 'sectionend',
-					'id'   => 'wppd_dashboard',
+					'id'   => 'story4dev_dashboard',
 				),
 
 			)
 		);
 
-		return apply_filters( 'wppd_get_welcomes_' . $this->id, $welcomes );
+		return apply_filters( 'story4dev_get_welcomes_' . $this->id, $welcomes );
 	}
 }
