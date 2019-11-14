@@ -9,6 +9,8 @@ namespace Story4Dev\WordPress\Admin;
  * @since 1.0.0
  */
 class SyncBlog extends WelcomePage{
+    
+    const WEB_URL = 'https://story4dev.com';
 
 	/**
 	 * Constructor.
@@ -97,5 +99,69 @@ class SyncBlog extends WelcomePage{
     }
     
     public function import($slug) {
+        global $wpdb;
+        
+        $url = self::WEB_URL.'/feed/json/'.$slug;
+        $curl = \curl_init();
+        \curl_setopt($curl, CURLOPT_URL, $url);
+        \curl_setopt($curl, CURLOPT_FAILONERROR, true);
+        \curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+        \curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        \curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        \curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);  
+        $result = \curl_exec($curl);
+        
+        $response = json_decode($result);
+        
+        if(isset($response->data) && is_array($response->data)){
+            foreach($response->data as $report){
+                $post = $wpdb->get_row("SELECT * FROM {$wpdb->postmeta} WHERE meta_key = '_report_id' AND  meta_value = '{$report->id}' LIMIT 1");
+                
+                $title = $report->title;
+                $description = $this->getDescription($report);
+                $gmt_date = $report->synced_at;
+                if(!$post){
+                    $post_args = array(
+                        'post_title'    => $title,
+                        'post_content'  => $description,
+                        'post_date'     => \get_date_from_gmt( $gmt_date ),
+                        'post_date_gmt' => $gmt_date,
+                        'post_type'	    => 'post',
+                        'post_status'   => 'publish',
+                    );
+                    $post_id = \wp_insert_post($post_args);
+                    \update_post_meta($post_id, '_report_id', $report->id);
+                }else{
+                    $gmt_date = $report->synced_at;
+                    $post_args = array(
+                        'ID'            => $post->post_id,
+                        'post_title'    => $title,
+                        'post_content'  => $description,
+                        'post_date'     => \get_date_from_gmt( $gmt_date ),
+                        'post_date_gmt' => $gmt_date
+                    );
+                    \wp_update_post($post_args);
+                }
+            }
+        }
+    }
+    
+    public function getDescription($report) {
+        $description = $report->description;
+        $description .= '<ul class="report-file">';
+        if(isset($report->reportFiles) && is_array($report->reportFiles)){
+            foreach($report->reportFiles as $reportFile){
+                $file = $reportFile->file;
+                if($file){
+                    $description .= '<li>';
+                        //$description .= '<a href="'.WEB_URL.'/download/'.$file->id.'" target="_blank"></a>';
+                        $description .= '<a href="'.self::WEB_URL.'/uploads/file/'.$file->name.'" target="_blank">'.$file->name.'</a>';
+                    $description .= '</li>';
+                }
+            }
+        }
+        $description .= '</ul>';
+
+        return $description;
     }
 }
