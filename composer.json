@@ -1,0 +1,16 @@
+{
+    "name": "story4dev/fta",
+    "description": "Synchronise les rapports d'un projet sur story4dev.com",
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "JOELINJATOVO Haja",
+            "email": "joelinjatovo@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Story4Dev\\": "src/Story4Dev/"
+        }
+    }
+}
