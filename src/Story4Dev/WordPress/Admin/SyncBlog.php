@@ -39,9 +39,9 @@ class SyncBlog extends WelcomePage{
 			array(
 
 				array(
-					'title' => __( 'Synchronisation Database vers WooProduct', 'story4dev' ),
+					'title' => __( 'Synchronisation Story4DEv vers Blog', 'story4dev' ),
 					'type'  => 'title',
-					'desc'  => __( 'Allow to sync story4dev product catalogue with WooCommerce Product.', 'story4dev' ).
+					'desc'  => __( 'Allow to sync wordpress blog catalogue with Story4Dev report.', 'story4dev' ).
                                 ' <br>' . sprintf( _n( 'You have %s new catalogue to synchronize.', 'You have %s new catalogues to synchronize.', $count, 'story4dev' ), number_format_i18n( $count ) ),
 					'id'    => 'story4dev_sync',
 				),
