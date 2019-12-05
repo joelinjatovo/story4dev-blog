@@ -74,19 +74,19 @@ class ReportSyncer extends BaseCron{
             $response = $this->getData();
             $result = $this->import($response);
         }catch(\Exception $e){
-            
+            s4d_log('exception', $e->getMessage());
         }
     }
     
-    private function getData() {
+    public function getData() {
         $url = $this->getFeedUrl();
         
-        if( function_exists('curl_init') ) {
-            throw new Exception('PHP Curl required');
+        if( ! function_exists('curl_init') ) {
+            throw new \Exception('PHP Curl required');
         }
         
         $curl = \curl_init();
-        if (!$curl) {
+        if ( ! $curl ) {
             throw new \Exception("CURL failed to initialize ");
         }
         
@@ -105,10 +105,10 @@ class ReportSyncer extends BaseCron{
         }
         
         //Get the HTTP status code.
-        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         
         //Close the cURL handler.
-        curl_close($ch);
+        curl_close($curl);
         
         // check response code
         if($httpcode != 200){
@@ -129,7 +129,7 @@ class ReportSyncer extends BaseCron{
         return $response;
     }
     
-    private function import($response) {
+    public function import($response) {
         global $wpdb;
         $new = $update = 0;
         

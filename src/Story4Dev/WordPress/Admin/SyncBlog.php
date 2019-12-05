@@ -59,15 +59,19 @@ class SyncBlog extends WelcomePage{
      * Override
      */
     public function save() {
-        $value = Welcome::get_post('story4dev_project_slug', false);
-        if($value !== false) {
+        //$value = Welcome::get_post('story4dev_project_slug', false);
+        //if($value !== false) {
             try{
-                self::import($value);
                 $result = 5;
+                
+                $model = new \Story4Dev\WordPress\Schedule\ReportSyncer();
+                $response = $model->getData();
+                $result = $model->import($response);
+                
                 Welcome::add_message( sprintf( _n( '%s new product imported.', '%s new products imported.', $result, 'story4dev' ), $result ) );
             }catch(\Exception $e){
                 Welcome::add_error( __( 'An error has occured when syncing.', 'story4dev' ).' '.$e->getMessage() );
             }
-        }
+        //}
     }
 }
