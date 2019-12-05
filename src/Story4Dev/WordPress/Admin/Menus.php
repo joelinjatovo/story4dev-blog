@@ -23,7 +23,7 @@ class Menus implements HooksInterface{
     }
     
     public function admin_menu(){
-        add_menu_page( __( 'Story4Dev', 'story4dev' ) , __( 'Story4Dev', 'story4dev' ), 'manage_options', 'story4dev', null, plugins_url( 'story4dev/assets/images/icon.png' ), 2);
+        add_menu_page( __( 'Story4Dev', 'story4dev' ) , __( 'Story4Dev', 'story4dev' ), 'manage_options', 'story4dev', null, S4D_URL . 'assets/images/icon.png', 2);
     }
     
     public function dashboard_menu(){

@@ -59,7 +59,7 @@ class Welcome{
         do_action( 'story4dev_post_welcomes_' . $current_page );
         do_action( 'story4dev_post_welcomes' );
 
-        //self::add_message( __( 'Your request has been executed.', 'WpPerDim' ) );
+        //self::add_message( __( 'Your request has been executed.', 'story4dev' ) );
 
         do_action( 'story4dev_welcomes_posted' );
     }

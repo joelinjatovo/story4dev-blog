@@ -49,13 +49,13 @@ class Settings{
      * Save the settings.
      */
     public static function save() {
-        global $current_WpPerDim_tab;
+        global $current_story4dev_tab;
 
         check_admin_referer( 'story4dev-settings' );
 
         // Trigger actions.
-        do_action( 'story4dev_settings_save_' . $current_WpPerDim_tab );
-        do_action( 'story4dev_update_options_' . $current_WpPerDim_tab );
+        do_action( 'story4dev_settings_save_' . $current_story4dev_tab );
+        do_action( 'story4dev_update_options_' . $current_story4dev_tab );
         do_action( 'story4dev_update_options' );
 
         self::add_message( __( 'Your settings have been saved.', 'story4dev' ) );
@@ -222,18 +222,18 @@ class Settings{
                     }
                     echo '<table class="form-table">' . "\n\n";
                     if ( ! empty( $value['id'] ) ) {
-                        do_action( 'WpPerDim_settings_' . sanitize_title( $value['id'] ) );
+                        do_action( 'story4dev_settings_' . sanitize_title( $value['id'] ) );
                     }
                     break;
 
                 // Section Ends.
                 case 'sectionend':
                     if ( ! empty( $value['id'] ) ) {
-                        do_action( 'WpPerDim_settings_' . sanitize_title( $value['id'] ) . '_end' );
+                        do_action( 'story4dev_settings_' . sanitize_title( $value['id'] ) . '_end' );
                     }
                     echo '</table>';
                     if ( ! empty( $value['id'] ) ) {
-                        do_action( 'WpPerDim_settings_' . sanitize_title( $value['id'] ) . '_after' );
+                        do_action( 'story4dev_settings_' . sanitize_title( $value['id'] ) . '_after' );
                     }
                     break;
 
@@ -610,7 +610,7 @@ class Settings{
                     $value   = in_array( $raw_value, $allowed_values, true ) ? $raw_value : $default;
                     break;
                 default:
-                    $value = wc_clean( $raw_value );
+                    $value = sanitize_text_field( $raw_value );
                     break;
             }
 

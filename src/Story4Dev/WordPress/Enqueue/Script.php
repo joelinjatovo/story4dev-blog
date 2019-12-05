@@ -13,7 +13,7 @@ use Story4Dev\Interfaces\HooksInterface;
 class Script implements HooksInterface{
 
     /**
-     * @see WpPerDim\Interfaces\HooksInterface
+     * @see Story4Dev\Interfaces\HooksInterface
      */
     public function hooks(){
         add_action("wp_enqueue_scripts", array($this, 'front_script'), PHP_INT_MAX);

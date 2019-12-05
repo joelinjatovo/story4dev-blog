@@ -40,7 +40,7 @@ class Dashboard extends WelcomePage {
 				array(
 					'type'  => 'notice',
 					'class' => 'story4dev-notice story4dev-notice-important',
-					//'title' => __( 'Important', 'WpPerDim' ),
+					//'title' => __( 'Important', 'story4dev' ),
 					'desc'  => __( 'Notice', 'story4dev' ),
 					'id'    => 'dashboard-notice',
 				),

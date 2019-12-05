@@ -14,7 +14,7 @@ class Style implements HooksInterface{
 
 
     /**
-     * @see WpPerDim\Interfaces\HooksInterface
+     * @see Story4Dev\Interfaces\HooksInterface
      */
     public function hooks(){
         add_action("wp_enqueue_scripts",    array($this, 'front_style'), PHP_INT_MAX);
