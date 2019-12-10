@@ -1,6 +1,8 @@
 <?php
 
 function s4d_log($index, $message){
+    return;
+    
     if( !is_dir(S4D_DIR."log") && !mkdir(S4D_DIR."log") ){
         return;
     }
