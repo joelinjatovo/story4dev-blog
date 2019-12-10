@@ -47,7 +47,7 @@ class ReportSyncer extends BaseCron{
     * @see Story4Dev\WordPress\Schedule\BaseCron
     */
     protected function getInterval(){
-        return 20*60; // 60 seconds * 20 minutes = 1/3 hour
+        return 20 * 60; // 60 seconds * 20 minutes = 1/3 hour
     }
     
     /**
@@ -72,6 +72,7 @@ class ReportSyncer extends BaseCron{
         
         try{
             $response = $this->getData();
+            s4d_log('response', $response);
             $result = $this->import($response);
         }catch(\Exception $e){
             s4d_log('exception', $e->getMessage());
@@ -171,9 +172,11 @@ class ReportSyncer extends BaseCron{
     }
     
     private function getDescription($report) {
-        $description = $report->description;
+        $description = '<div class="s4d-description">';
+            $description .= $report->description;
+        $description .= '</div>';
         
-        $description .= '<div class="results">';
+        $description .= '<div class="s4d-results">';
             $description .= '<h3>Résultats</h3>';
             $description .= '<ul class="report-results">';
             if(isset($report->results) && is_array($report->results)){
@@ -192,9 +195,9 @@ class ReportSyncer extends BaseCron{
                 }
             }
             $description .= '</ul>';
-        $description .= '<div>';
+        $description .= '</div>';
         
-        $description .= '<div class="files">';
+        $description .= '<div class="s4d-files">';
             $description .= '<h3>Documents</h3>';
             $description .= '<ul class="report-files">';
             if(isset($report->reportFiles) && is_array($report->reportFiles)){
@@ -203,13 +206,17 @@ class ReportSyncer extends BaseCron{
                     if($file){
                         $description .= '<li>';
                             //$description .= '<a href="'.WEB_URL.'/download/'.$file->id.'" target="_blank"></a>';
-                            $description .= '<a href="'.$this->getFileUrl($file).'" target="_blank">'.$file->name.'</a>';
+                            $description .= '<a href="'.$this->getFileUrl($file).'">'.$file->displayName.'</a>';
                         $description .= '</li>';
                     }
                 }
             }
             $description .= '</ul>';
-        $description .= '<div>';
+        $description .= '</div>';
+        
+        $description .= '<div class="s4d-maps">';
+            $description .= '<iframe src="https://maps.google.com/maps?q='.$report->latitude.','.$report->longitude.'&hl=fr;z=14&output=embed" width="100%" height="450" frameborder="0" style="border:0;" allowfullscreen=""></iframe>';
+        $description .= '</div>';
 
         return $description;
     }

@@ -23,6 +23,9 @@ $actions = array(
     
     /** Admin Menu */
     new \Story4Dev\WordPress\Admin\Menus(),
+    
+    /** Schedule */
+    new \Story4Dev\WordPress\Schedule\ReportSyncer(),
 );
 
 $wppd = new \Story4Dev\Story4Dev($actions);
