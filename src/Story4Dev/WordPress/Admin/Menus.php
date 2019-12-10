@@ -27,7 +27,7 @@ class Menus implements HooksInterface{
     }
     
     public function dashboard_menu(){
-        $welcome_page = add_submenu_page('story4dev', __( 'Welcome to Story4Dev', 'story4dev' ) , __( 'Story4Dev', 'story4dev' ), 'manage_options', 'story4dev', array($this, "welcome_page"), null, 0);
+        $welcome_page = add_submenu_page('story4dev', __( 'Dashboard : Story4Dev', 'story4dev' ) , __( 'Dashboard', 'story4dev' ), 'manage_options', 'story4dev', array($this, "welcome_page"), null, 0);
         add_action( 'load-' . $welcome_page, array( $this, 'welcome_page_init' ) );
     }
     

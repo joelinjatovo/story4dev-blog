@@ -40,7 +40,7 @@ class SettingsGeneral extends SettingsPage {
 
                 array(
                     'title'    => __( 'Projet', 'story4dev' ),
-                    'desc'     => __( 'Saississez l\'url du projet sur Story4Dev.', 'story4dev' ),
+                    'desc'     => __( 'Saississez le <strong>slug</strong> du projet sur story4dev.com', 'story4dev' ),
                     'id'       => 'story4dev_project_url',
                     'type'     => 'text',
                     'default'  => 'projet-test',

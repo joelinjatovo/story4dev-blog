@@ -15,7 +15,7 @@ class Dashboard extends WelcomePage {
 	 */
 	public function __construct() {
 		$this->id    = 'story4dev';
-		$this->label = __( 'Welcome', 'story4dev' );
+		$this->label = __( 'Dashboard', 'story4dev' );
 		parent::__construct();
 	}
 
@@ -32,17 +32,12 @@ class Dashboard extends WelcomePage {
 
 				array(
 					'type'  => 'title',
-					'title' => __( 'Dashboard', 'story4dev' ),
-					'desc'  => __( 'Description', 'story4dev' ),
+					'title' => __( 'Remarque', 'story4dev' ),
+					'desc'  => sprintf(
+                        __( 'Tous les rapports de votre projet <code>%s</code> sur story4dev.com seront importés dans ce blog tous les 20 minutes.', 'story4dev' ),
+                        'https://story4dev.com/p/'.get_option('story4dev_project_url', 'slug').'/reports'
+                        ),
 					'id'    => 'story4dev_dashboard',
-				),
-
-				array(
-					'type'  => 'notice',
-					'class' => 'story4dev-notice story4dev-notice-important',
-					//'title' => __( 'Important', 'story4dev' ),
-					'desc'  => __( 'Notice', 'story4dev' ),
-					'id'    => 'dashboard-notice',
 				),
 
 				array(

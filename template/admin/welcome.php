@@ -17,7 +17,7 @@ if ( ! $page_exists ) {
 }
 ?>
 <div class="wrap nexway-wrap">
-    <h1><?php echo sprintf( __( 'Welcome to %s!', 'story4dev' ), 'Story4Dev Blog' ); ?></h1>
+    <h1><?php echo sprintf( __( 'Dashboard : %s!', 'story4dev' ), 'Story4Dev Blog' ); ?></h1>
     <div class="about-text"></div>
     <form method="<?php echo esc_attr( apply_filters( 'nexway_welcomes_form_method_tab_' . $current_page, 'post' ) ); ?>" id="mainform" action="" enctype="multipart/form-data">
         <nav class="nav-tab-wrapper nxw-nav-tab-wrapper">
