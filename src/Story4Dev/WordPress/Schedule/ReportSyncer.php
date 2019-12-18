@@ -180,7 +180,7 @@ class ReportSyncer extends BaseCron{
         $description .= '</div>';
         
         $description .= '<div class="s4d-results">';
-            $description .= '<h3>Résultats</h3>';
+            $description .= '<h5>Résultats</h5>';
             $description .= '<ul class="report-results">';
             if(isset($report->results) && is_array($report->results)){
                 foreach($report->results as $result){
@@ -201,23 +201,54 @@ class ReportSyncer extends BaseCron{
         $description .= '</div>';
         
         $description .= '<div class="s4d-files">';
-            $description .= '<h3>Documents</h3>';
+            $description .= '<h5>Documents</h5>';
             $description .= '<ul class="report-files">';
             if(isset($report->reportFiles) && is_array($report->reportFiles)){
                 foreach($report->reportFiles as $reportFile){
                     $file = $reportFile->file;
                     if($file){
-                        $description .= '<li>';
-                            //$description .= '<a href="'.WEB_URL.'/download/'.$file->id.'" target="_blank"></a>';
-                            $description .= '<a href="'.$this->getFileUrl($file).'">'.$file->displayName.'</a>';
-                        $description .= '</li>';
+                        $url = $this->getFileUrl($file);
+                        $filename = basename( $url );
+                        $wp_filetype = wp_check_filetype( $filename, null );
+                        if( strpos($wp_filetype['type'], 'image/') === false ){
+                            $description .= '<li>';
+                                $description .= '<a href="'.$this->getFileUrl($file).'">'.$file->displayName.'</a>';
+                            $description .= '</li>';
+                        }
                     }
                 }
             }
             $description .= '</ul>';
         $description .= '</div>';
         
+        $description .= '<div class="s4d-gallery">';
+            $description .= '<h5>Images</h5>';
+            $description .= '<figure class="wp-block-gallery columns-3 is-cropped">';
+                $description .= '<ul class="blocks-gallery-grid">';
+                if(isset($report->reportFiles) && is_array($report->reportFiles)){
+                    foreach($report->reportFiles as $reportFile){
+                        $file = $reportFile->file;
+                        if($file){
+                            $url = $this->getFileUrl($file);
+                            $filename = basename( $url );
+                            $wp_filetype = wp_check_filetype( $filename, null );
+                            if( strpos($wp_filetype['type'], 'image/') === false ){
+                                continue;
+                            }
+                            $description .= '<li class="blocks-gallery-item">';
+                                $description .= '<figure>';
+                                    $description .= '<img src="'.$url.'" alt="" data-id="'.$file->id.'" data-full-url="'.$url.'" data-link="'.$url.'" class="wp-image-'.$file->id.'"/>';
+                                $description .= '</figure>';
+                            $description .= '</li>';
+                        }
+                    }
+                }
+                $description .= '</ul>';
+            $description .= '</figure>';
+        $description .= '</div>';
+        
         $description .= '<div class="s4d-maps">';
+            $description .= '<h5>Localisation</h5>';
             $description .= '<iframe src="https://maps.google.com/maps?q='.$report->latitude.','.$report->longitude.'&hl=fr;z=14&output=embed" width="100%" height="450" frameborder="0" style="border:0;" allowfullscreen=""></iframe>';
         $description .= '</div>';
 
