@@ -154,9 +154,10 @@ class ReportSyncer extends BaseCron{
                     \update_post_meta($post_id, '_report_id', $report->id);
                     $new++;
                 }else{
-                    $gmt_date = $report->synced_at;
+                    $post_id   = $post->post_id;
+                    $gmt_date  = $report->synced_at;
                     $post_args = array(
-                        'ID'            => $post->post_id,
+                        'ID'            => $post_id,
                         'post_title'    => $title,
                         'post_content'  => $description,
                         'post_date'     => \get_date_from_gmt( $gmt_date ),
@@ -165,6 +166,8 @@ class ReportSyncer extends BaseCron{
                     \wp_update_post($post_args);
                     $update++;
                 }
+                
+                $this->addAttachment($post_id, $report);
             }
         }
         
@@ -235,5 +238,58 @@ class ReportSyncer extends BaseCron{
             throw new \Exception('Need to setup');
         }
         return $this->getUrl().'/feed/json/'.$slug;
+    }
+    
+    private function addAttachment($post_id, $report){
+        if ( has_post_thumbnail( $post_id )
+                || !isset($report->reportFiles)
+                || !is_array($report->reportFiles)
+                || empty($report->reportFiles) ){
+            return;
+        }
+        
+        foreach($report->reportFiles as $reportFile){
+            $file = $reportFile->file;
+            
+            $url = $this->getFileUrl($file);
+
+            $filename = basename( $url );
+            $wp_filetype = wp_check_filetype( $filename, null );
+            
+            if( strpos($wp_filetype['type'], 'image/') === false ){
+                continue;
+            }
+
+            $upload_dir = wp_upload_dir();
+            if ( wp_mkdir_p( $upload_dir['path'] ) ) {
+                $file_path = $upload_dir['path'] . '/' . $filename;
+            } else {
+                $file_path = $upload_dir['basedir'] . '/' . $filename;
+            }
+
+            $image_data = file_get_contents( $url );
+            file_put_contents( $file_path, $image_data );
+
+
+            $attachment = array(
+                'guid'           => $upload_dir['url'] . '/' . $filename, 
+                'post_mime_type' => $wp_filetype['type'],
+                'post_title'     => sanitize_file_name( $filename ),
+                'post_content'   => '',
+                'post_status'    => 'inherit'
+            );
+
+            $attach_id = wp_insert_attachment( $attachment, $file_path );
+
+            require_once( ABSPATH . 'wp-admin/includes/image.php' );
+
+            $attach_data = wp_generate_attachment_metadata( $attach_id, $file_path );
+
+            wp_update_attachment_metadata( $attach_id, $attach_data );
+            
+            set_post_thumbnail( $post_id, $attach_id );
+            
+            return;
+        }
     }
 }
