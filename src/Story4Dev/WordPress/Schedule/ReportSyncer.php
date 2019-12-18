@@ -179,32 +179,32 @@ class ReportSyncer extends BaseCron{
             $description .= $report->description;
         $description .= '</div>';
         
-        $result = '';
+        $resultHtml = '';
             if(isset($report->results) && is_array($report->results)){
                 foreach($report->results as $result){
                     $indicator = $result->indicator;
                     if($indicator){
-                        $result .= '<li>';
-                            $result .= $indicator->title;
+                        $resultHtml .= '<li>';
+                            $resultHtml .= $indicator->title;
 
                             $unit = $indicator->unit;
                             if($unit){
-                                $result .= '( ' . $result->value . ' ' . $unit->title . ' )';
+                                $resultHtml .= '( ' . $result->value . ' ' . $unit->title . ' )';
                             }
-                        $result .= '</li>';
+                        $resultHtml .= '</li>';
                     }
                 }
             }
-            if( !empty($result) ) {
+            if( !empty($resultHtml) ) {
                 $description .= '<div class="s4d-results">';
                     $description .= '<h5>Résultats</h5>';
                     $description .= '<ul class="report-results">';
-                        $description .= $result;
+                        $description .= $resultHtml;
                     $description .= '</ul>';
                 $description .= '</div>';
             }
         
-        $document = '';
+        $documentHtml = '';
             if(isset($report->reportFiles) && is_array($report->reportFiles)){
                 foreach($report->reportFiles as $reportFile){
                     $file = $reportFile->file;
@@ -213,18 +213,18 @@ class ReportSyncer extends BaseCron{
                         $filename = basename( $url );
                         $wp_filetype = wp_check_filetype( $filename, null );
                         if( strpos($wp_filetype['type'], 'image/') === false ){
-                            $document .= '<li>';
-                                $document .= '<a href="'.$this->getFileUrl($file).'">'.$file->displayName.'</a>';
-                            $document .= '</li>';
+                            $documentHtml .= '<li>';
+                                $documentHtml .= '<a href="'.$this->getFileUrl($file).'">'.$file->displayName.'</a>';
+                            $documentHtml .= '</li>';
                         }
                     }
                 }
             }
-            if( !empty($document) ) {
+            if( !empty($documentHtml) ) {
                 $description .= '<div class="s4d-files">';
                     $description .= '<h5>Documents</h5>';
                     $description .= '<ul class="report-files">';
-                        $description .= $document;
+                        $description .= $documentHtml;
                     $description .= '</ul>';
                 $description .= '</div>';
             }
